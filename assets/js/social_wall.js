@@ -2,7 +2,8 @@
 let selector = document.getElementById('sw_selector');
 let updateDisplay = function(media) {
     let postDivs = document.getElementsByClassName('sw_post');
-    for (let postDiv of postDivs) {
+    for (let i=0; i<postDivs.length; i++) {
+        let postDiv = postDivs[i];
         if (media == 'all' || postDiv.classList.contains(media + '_post'))
             postDiv.style.display = 'inline-block';
         else
