@@ -1,14 +1,14 @@
 
-@media (min-width:600px) {
+@media (min-width:700px) {
     .sw_container {
-        column-count: 2;
+        column-count: 3;
         column-gap: 0;
     }
 }
 
-@media (min-width:1000px) {
+@media (min-width:1200px) {
     .sw_container {
-        column-count: 3;
+        column-count: 4;
         column-gap: 0;
     }
 }
