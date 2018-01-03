@@ -213,6 +213,10 @@
                     var message = ipost.caption.text;
                     message = message.reReplace('##(\w+)',
                         '<a href="https://www.instagram.com/explore/tags/\1">##\1</a>', 'all');
+                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]+)',
+                        '\1<a href="\2">\2</a>', 'all');
+                    message = message.reReplace('@(\w+)',
+                        '<a href="https://www.instagram.com/\1/">@\1</a>', 'all');
                     post.images = [ipost.images.standard_resolution.url];
                     post.link = ipost.link;
                     post.content = message;
