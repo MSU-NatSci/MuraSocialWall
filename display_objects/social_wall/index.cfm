@@ -99,7 +99,7 @@
                             var medias = status.entities.media;
                             for (var media in medias) {
                                 if (media.type == 'photo' || media.type == 'animated_gif')
-                                    post.images.append(media.media_url);
+                                    post.images.append(media.media_url_https);
                             }
                         }
                         // example time: 'Wed Aug 27 13:08:45 +0000 2008'
@@ -166,11 +166,16 @@
                     post.date = lsParseDateTime(fbpost.created_time, 'en', "yyyy-MM-dd'T'HH:mm:ssZ");
                     var message = fbpost.message;
                     message = message.reReplace('##(\w+)', '<a href="https://www.facebook.com/hashtag/\1">##\1</a>', 'all');
-                    var imgURL = fbpost.full_picture;
+                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]+)',
+                        '\1<a href="\2">\2</a>', 'all');
+                    var imgURL = '';
+                    if (structKeyExists(fbpost, 'full_picture'))
+                        imgURL = fbpost.full_picture;
                     post.images = [];
-                    if (isDefined('imgURL'))
+                    if (imgURL != '')
                         post.images.append(imgURL);
-                    post.link = fbpost.link;
+                    if (structKeyExists(fbpost, 'link'))
+                        post.link = fbpost.link;
                     post.content = message;
                     posts.append(post);
                 }
@@ -231,7 +236,7 @@
     </cfif>
     <cfif smedia.len() gte 2>
         <div class="sw_selector_container">
-            <p>Display posts from <select id="sw_selector">
+            <p><label for="sw_selector">Display posts from</label> <select id="sw_selector">
                 <cfset first = smedia[1]>
                 <cfloop index="sm" array="#smedia#">
                     <option value="#sm#"<cfif sm eq first> selected</cfif>>#sm.mid(1,1).uCase() & sm.mid(2,sm.len()-1)#</option>
@@ -249,7 +254,7 @@
                 </div>
                 #post.content#
                 <cfif structKeyExists(post, 'link')>
-                    <a href="#post.link#">more...</a>
+                    <cfoutput> </cfoutput><a href="#post.link#">more...</a>
                 </cfif>
                 <cfloop index="imageURL" array="#post.images#">
                     <cfif structKeyExists(post, 'link')>
