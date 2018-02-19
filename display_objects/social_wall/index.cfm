@@ -2,15 +2,17 @@
 	include '../../plugin/settings.cfm';
 
     // Each social media app has a limit on the number of queries, so caching is very important here.
-    // 10 minutes harcoded here (this could be a configuration parameter).
-    cf_CacheOMatic(timespan=createTimeSpan(0,0,10,0)) {
-        res = getPosts($);
-        template($, res.smedia, res.posts);
+    siteid = $.siteConfig('siteId');
+    config = $.getBean('socialwallconfig').loadBy(siteId=siteid);
+    cacheTime = config.get('cacheTime');
+    if (cacheTime == '')
+        cacheTime = 10;
+    cf_CacheOMatic(timespan=createTimeSpan(0,0,cacheTime,0)) {
+        res = getPosts(config);
+        template($, res.options, res.posts);
     }
 
-    public struct function getPosts($) {
-        var siteid = $.siteConfig('siteId');
-        var config = $.getBean('socialwallconfig').loadBy(siteId=siteid);
+    public struct function getPosts(config) {
         var twitterOAuthConsumerKey = config.get('twitterOAuthConsumerKey');
         var twitterOAuthConsumerSecret = config.get('twitterOAuthConsumerSecret');
         var twitterScreenName = config.get('twitterScreenName');
@@ -18,22 +20,25 @@
         var facebookAppSecret = config.get('facebookAppSecret');
         var facebookUserId = config.get('facebookUserId');
         var instagramAccessToken = config.get('instagramAccessToken');
+        var options = config.get('options');
+        if (options == '')
+            options = 'Twitter:twitter|Facebook:facebook|Instagram:instagram|All:twitter,facebook,instagram';
         
-        var smedia = [];
+        var confMedia = [];
         var posts = [];
         
         if (twitterOAuthConsumerKey != '' && twitterOAuthConsumerSecret != '' && twitterScreenName != '') {
-            smedia.append('twitter');
+            confMedia.append('twitter');
             posts.append(getTwitterPosts(twitterOAuthConsumerKey, twitterOAuthConsumerSecret, twitterScreenName), true);
         }
         
         if (facebookAppID != '' && facebookAppSecret != '' && facebookUserId != '') {
-            smedia.append('facebook');
+            confMedia.append('facebook');
             posts.append(getFacebookPosts(facebookAppID, facebookAppSecret, facebookUserId), true);
         }
 
         if (instagramAccessToken != '') {
-            smedia.append('instagram');
+            confMedia.append('instagram');
             posts.append(getInstagramPosts(instagramAccessToken), true);
         }
 
@@ -42,8 +47,30 @@
             return -compare(p1.date, p2.date);
         });
 
+
+        if (confMedia.len() < 2) {
+            // clear options if there is less than 2 configured media
+            options = '';
+        } else {
+            // remove options without the required information
+            var newoptions = '';
+            for (var option in listToArray(options, '|')) {
+                var medias = listLast(option, ':');
+                var foundOne = false;
+                for (media in listToArray(medias, ',')) {
+                    if (confMedia.find(media) > 0) {
+                        foundOne = true;
+                        break;
+                    }
+                }
+                if (foundOne)
+                    newoptions = listAppend(newoptions, option, '|');
+            }
+            options = newoptions;
+        }
+
         return {
-            smedia: smedia,
+            options: options,
             posts: posts
         };
     }
@@ -233,21 +260,23 @@
 
 <cffunction name="template" output="true">
     <cfargument name="$" type="struct" required="yes">
-    <cfargument name="smedia" type="array" required="yes">
+    <cfargument name="options" type="string" required="yes">
     <cfargument name="posts" type="array" required="yes">
-    <cfif smedia.len() eq 0>
+    <cfif options.len() eq 0>
         <p>The Social Media Wall plugin has not been configured yet.</p>
-    </cfif>
-    <cfif smedia.len() gte 2>
-        <div class="sw_selector_container">
-            <p><label for="sw_selector">Display posts from</label> <select id="sw_selector">
-                <cfset first = smedia[1]>
-                <cfloop index="sm" array="#smedia#">
-                    <option value="#sm#"<cfif sm eq first> selected</cfif>>#sm.mid(1,1).uCase() & sm.mid(2,sm.len()-1)#</option>
-                </cfloop>
-                <option value="all">All</option>
-            </select></p>
-        </div>
+    <cfelse>
+        <cfif listLen(options, '|') gt 1>
+            <div class="sw_selector_container">
+                <p><label for="sw_selector">Display posts </label> <select id="sw_selector">
+                    <cfset first = listFirst(options, '|')>
+                    <cfloop index="option" list="#options#" delimiters="|">
+                        <cfset title = listFirst(option, ':')>
+                        <cfset medias = listLast(option, ':')>
+                        <option value="#medias#"<cfif option eq first> selected</cfif>>#title#</option>
+                    </cfloop>
+                </select></p>
+            </div>
+        </cfif>
     </cfif>
     <div class="sw_container">
         <cfloop index="post" array="#posts#">

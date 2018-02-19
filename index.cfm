@@ -13,6 +13,8 @@
         facebookAppSecret = form.facebookAppSecret;
         facebookUserId = form.facebookUserId;
         instagramAccessToken = form.instagramAccessToken;
+        options = form.options;
+        cacheTime = form.cacheTime;
     } else {
         config = $.getBean('socialwallconfig').loadBy(siteId=siteid);
         twitterOAuthConsumerKey = config.get('twitterOAuthConsumerKey');
@@ -22,6 +24,12 @@
         facebookAppSecret = config.get('facebookAppSecret');
         facebookUserId = config.get('facebookUserId');
         instagramAccessToken = config.get('instagramAccessToken');
+        options = config.get('options');
+        if (options == '')
+            options = 'Twitter:twitter|Facebook:facebook|Instagram:instagram|All:twitter,facebook,instagram';
+        cacheTime = config.get('cacheTime');
+        if (cacheTime == '')
+            cacheTime = 10;
     }
 
     function action($) {
@@ -45,6 +53,16 @@
                 config.set('facebookAppSecret', form.facebookAppSecret);
                 config.set('facebookUserId', form.facebookUserId);
                 config.set('instagramAccessToken', form.instagramAccessToken);
+                config.set('options', form.options);
+                var cacheTime = form.cacheTime;
+                if (!(isSimpleValue(cacheTime) && cacheTime.reFind('^[0-9]{1,5}$') == 1)) {
+					message = {
+						type = 'error',
+						content = "The cache time must be an integer."
+					};
+                    return message;
+                }
+                config.set('cacheTime', cacheTime);
                 
                 var result = config.save();
 
@@ -125,6 +143,14 @@
                 <div class="mura-control-group">
                     <label>Instagram Acess Token</label>
                     <input type="text" name="instagramAccessToken" value="#instagramAccessToken#">
+                </div>
+                <div class="mura-control-group">
+                    <label>Options</label>
+                    <input type="text" name="options" value="#options#" maxlength="255">
+                </div>
+                <div class="mura-control-group">
+                    <label>Cache time (in minutes)</label>
+                    <input type="text" name="cacheTime" value="#cacheTime#">
                 </div>
                 #$.renderCSRFTokens(format='form', context='sw_config')#
                 <div class="mura-actions">

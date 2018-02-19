@@ -2,10 +2,10 @@
 A Mura 7 plugin with a display object listing recent posts from Twitter, Facebook and Instagram.
 
 ## Description
-Once the plugin is configured with the respective social media application keys, the display object can simply be drag&dropped anywhere with inline edit. It will display a chooser if more than one social media has been configured. The chooser lets the end user select one social media or all of them. All the recent posts from the user are displayed with a wall view, sorted by date. It adapts to the available width, using one to three columns.
+Once the plugin is configured with the respective social media application keys, the display object can simply be drag&dropped anywhere with inline edit. It will display a chooser if more than one social media has been configured. The chooser lets the end user select a list of social media to be displayed, as configured in administration. All the recent posts from the user are displayed with a wall view, sorted by date. It adapts to the available width, using one to three columns.
 
 ## Configuration
-An application needs to be created for each of the social media used. These applications do not need to be public, and a sandbox mode should work. Limiting them to read-only permissions is a good idea as the plugin does not need anything else. To optimize speed and limit the number of requests, the display object uses a 10 minutes cache if site caching is enabled.
+An application needs to be created for each of the social media used. These applications do not need to be public, and a sandbox mode should work. Limiting them to read-only permissions is a good idea as the plugin does not need anything else. To optimize speed and limit the number of requests, the display object uses a 10 minutes cache if site caching is enabled. Adding `?purgeCache=1` to the URL will purge the cache.
 
 - Twitter
 

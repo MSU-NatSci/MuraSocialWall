@@ -1,10 +1,17 @@
 
 let selector = document.getElementById('sw_selector');
-let updateDisplay = function(media) {
+let updateDisplay = function(mediaList) {
     let postDivs = document.getElementsByClassName('sw_post');
-    for (let i=0; i<postDivs.length; i++) {
-        let postDiv = postDivs[i];
-        if (media == 'all' || postDiv.classList.contains(media + '_post'))
+    let medias = mediaList.split(',');
+    for (let postDiv of postDivs) {
+        let found = false;
+        for (let media of medias) {
+            if (postDiv.classList.contains(media + '_post')) {
+                found = true;
+                break;
+            }
+        }
+        if (found)
             postDiv.style.display = 'inline-block';
         else
             postDiv.style.display = 'none';
