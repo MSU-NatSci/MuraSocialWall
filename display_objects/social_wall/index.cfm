@@ -1,5 +1,5 @@
 <cfscript>
-	include '../../plugin/settings.cfm';
+    include '../../plugin/settings.cfm';
 
     // Each social media app has a limit on the number of queries, so caching is very important here.
     siteid = $.siteConfig('siteId');
@@ -7,7 +7,14 @@
     cacheTime = config.get('cacheTime');
     if (cacheTime == '')
         cacheTime = 10;
+    /* Lucee does not support that syntax
     cf_CacheOMatic(timespan=createTimeSpan(0,0,cacheTime,0)) {
+        start();
+    }
+    */
+    startWithCache();
+
+    public void function start() {
         res = getPosts(config);
         template($, res.options, res.posts);
     }
@@ -105,8 +112,8 @@
             httpService = new http(method="GET", charset="UTF-8",
                 url="https://api.twitter.com/1.1/statuses/user_timeline.json");
             httpService.addParam(type="header", name="Authorization", value='Bearer ' & accessToken);
-            httpService.addParam(type="formfield", name="screen_name", value=twitterScreenName);
-            httpService.addParam(type="formfield", name="tweet_mode", value="extended");
+            httpService.addParam(type="URL", name="screen_name", value=twitterScreenName);
+            httpService.addParam(type="URL", name="tweet_mode", value="extended");
             result = httpService.send().getPrefix();
             if (result.statusCode == '200 OK') {
                 var statuses = '';
@@ -173,9 +180,9 @@
         var posts = [];
         var httpService = new http(method="GET", charset="UTF-8",
             url="https://graph.facebook.com/#facebookUserId#/posts");
-        httpService.addParam(type="formfield", name="limit", value="20");
-        httpService.addParam(type="formfield", name="fields", value="message,created_time,full_picture,link");
-        httpService.addParam(type="formfield", name="access_token", value="#facebookAppID#|#facebookAppSecret#");
+        httpService.addParam(type="URL", name="limit", value="20");
+        httpService.addParam(type="URL", name="fields", value="message,created_time,full_picture,link");
+        httpService.addParam(type="URL", name="access_token", value="#facebookAppID#|#facebookAppSecret#");
         var result = httpService.send().getPrefix();
         if (result.statusCode == '200 OK') {
             var json = '';
@@ -222,7 +229,7 @@
         // https://www.instagram.com/oauth/authorize/?client_id=CLIENT_ID&redirect_uri=REDIRECT_URL&response_type=token
         var httpService = new http(method="GET", charset="UTF-8",
             url="https://api.instagram.com/v1/users/self/media/recent/");
-        httpService.addParam(type="formfield", name="access_token", value=instagramAccessToken);
+        httpService.addParam(type="URL", name="access_token", value=instagramAccessToken);
         var result = httpService.send().getPrefix();
         if (result.statusCode == '200 OK') {
             var json = '';
@@ -257,6 +264,12 @@
         return posts;
     }
 </cfscript>
+
+<cffunction name="startWithCache" output="true">
+    <cf_CacheOMatic timespan="#createTimeSpan(0, 0, cacheTime, 0)#">
+        <cfset start()>
+    </cf_CacheOMatic>
+</cffunction>
 
 <cffunction name="template" output="true">
     <cfargument name="$" type="struct" required="yes">
