@@ -56,10 +56,10 @@
                 config.set('options', form.options);
                 var cacheTime = form.cacheTime;
                 if (!(isSimpleValue(cacheTime) && cacheTime.reFind('^[0-9]{1,5}$') == 1)) {
-					message = {
-						type = 'error',
-						content = "The cache time must be an integer."
-					};
+                    message = {
+                        type = 'error',
+                        content = "The cache time must be an integer."
+                    };
                     return message;
                 }
                 config.set('cacheTime', cacheTime);
@@ -67,16 +67,16 @@
                 var result = config.save();
 
                 var errors = result.get('errors');
-				if (isDefined('errors') && structCount(errors)) {
-					var messageContent = '<ul>';
-					for (var errorKey in errors)
-						messageContent &= '<li>#errors[errorKey]#</li>';
-					messageContent &= '</ul>';
-					message = {
-						type = 'error',
-						content = messageContent
-					};
-				} else {
+                if (isDefined('errors') && structCount(errors)) {
+                    var messageContent = '<ul>';
+                    for (var errorKey in errors)
+                        messageContent &= '<li>#errors[errorKey]#</li>';
+                    messageContent &= '</ul>';
+                    message = {
+                        type = 'error',
+                        content = messageContent
+                    };
+                } else {
                     message = {
                         type = 'success',
                         content = (newConfig ? "Created" : "Updated") & " config."

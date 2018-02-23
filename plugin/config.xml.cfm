@@ -1,6 +1,6 @@
 
 <cfscript>
-	include 'settings.cfm';
+    include 'settings.cfm';
 </cfscript>
 <cfoutput>
     <plugin>
@@ -12,9 +12,9 @@
         <provider>#variables.settings.provider#</provider>
         <providerURL>#variables.settings.providerURL#</providerURL>
         <category>#variables.settings.category#</category>
-		<eventHandlers>
-			<eventHandler event="onApplicationLoad" component="model.handlers.eventHandler" persist="false"/>
-		</eventHandlers>
+        <eventHandlers>
+            <eventHandler event="onApplicationLoad" component="model.handlers.eventHandler" persist="false"/>
+        </eventHandlers>
         <mappings />
         <settings />
         <extensions />
