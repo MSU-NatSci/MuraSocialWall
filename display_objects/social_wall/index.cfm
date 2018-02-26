@@ -198,7 +198,9 @@
                     post.type = 'facebook';
                     // by default facebook returns an ISO 8601 date, eg 2017-12-28T14:36:23+0000
                     post.date = lsParseDateTime(fbpost.created_time, 'en', "yyyy-MM-dd'T'HH:mm:ssZ");
-                    var message = fbpost.message;
+                    var message = '';
+                    if (structKeyExists(fbpost, 'message'))
+                        message = fbpost.message;
                     message = message.reReplace('##(\w+)', '<a href="https://www.facebook.com/hashtag/\1">##\1</a>', 'all');
                     message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]+)',
                         '\1<a href="\2">\2</a>', 'all');
@@ -244,7 +246,9 @@
                     var post = {};
                     post.type = 'instagram';
                     post.date = dateAdd('s', ipost.created_time, createDate(1970, 1, 1));
-                    var message = ipost.caption.text;
+                    var message = '';
+                    if (structKeyExists(ipost, 'caption') && structKeyExists(ipost.caption, 'text'))
+                        message = ipost.caption.text;
                     message = message.reReplace('##(\w+)',
                         '<a href="https://www.instagram.com/explore/tags/\1">##\1</a>', 'all');
                     message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]+)',
