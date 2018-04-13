@@ -4,17 +4,32 @@ component accessors=true output=false {
     property name='$';
 
     include 'plugin/settings.cfm';
-    include '../../config/applicationSettings.cfm';
-    include '../../config/mappings.cfm';
-    include '../mappings.cfm';
+
+    local.pluginPath = GetDirectoryFromPath(GetCurrentTemplatePath());
+    local.muraroot = Left(local.pluginPath, Find('plugins', local.pluginPath) - 1);
+    local.depth = ListLen(RemoveChars(local.pluginPath, 1, Len(local.muraroot)), '\/');  
+    local.includeroot = RepeatString('../', local.depth);
+
+    if (DirectoryExists(local.muraroot & 'core')) {
+        // Using 7.1
+        this.muraAppConfigPath = local.includeroot & 'core/';
+        include this.muraAppConfigPath & 'appcfc/applicationSettings.cfm';
+    } else {
+        // Pre 7.1
+        this.muraAppConfigPath = local.includeroot & 'config/';
+        include local.includeroot & 'config/applicationSettings.cfm';
+        include local.includeroot & 'config/mappings.cfm';
+        include local.includeroot & 'plugins/mappings.cfm';
+    }
+
 
     public any function onApplicationStart() {
-        include '../../config/appcfc/onApplicationStart_include.cfm';
+        include this.muraAppConfigPath & 'appcfc/onApplicationStart_include.cfm';
         return true;
     }
 
     public any function onRequestStart(required string targetPage) {
-        include '../../config/appcfc/onRequestStart_include.cfm';
+        include this.muraAppConfigPath & 'appcfc/onRequestStart_include.cfm';
 
         if (
             (
@@ -44,12 +59,12 @@ component accessors=true output=false {
     }
 
     public void function onSessionStart() {
-        include '../../config/appcfc/onSessionStart_include.cfm';
+        include this.muraAppConfigPath & 'appcfc/onSessionStart_include.cfm';
         setupSession();
     }
 
     public void function onSessionEnd() {
-        include '../../config/appcfc/onSessionEnd_include.cfm';
+        include this.muraAppConfigPath & 'appcfc/onSessionEnd_include.cfm';
     }
 
 
