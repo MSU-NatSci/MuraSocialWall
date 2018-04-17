@@ -16,7 +16,9 @@ component accessors=true extends='mura.plugin.plugincfc' output=false {
 
     public void function delete() {
         // delete the config table if the plugin is uninstalled
-        getBean('dbUtility').dropTable(table=getBean('socialwallconfig').getTable());
+        var dbUtility = getBean('dbUtility');
+        if (dbUtility.tableExists('socialwallconfig'))
+            dbUtility.dropTable(table=getBean('socialwallconfig').getTable());
     }
 
     // access to the pluginConfig should available via variables.pluginConfig
