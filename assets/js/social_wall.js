@@ -3,6 +3,7 @@ let selector = document.getElementById('sw_selector');
 let updateDisplay = function(mediaList) {
     let postDivs = document.getElementsByClassName('sw_post');
     let medias = mediaList.split(',');
+    let nb = 0;
     for (let postDiv of postDivs) {
         let found = false;
         for (let media of medias) {
@@ -11,9 +12,10 @@ let updateDisplay = function(mediaList) {
                 break;
             }
         }
-        if (found)
+        if (found && nb < maxPosts) {
             postDiv.style.display = 'inline-block';
-        else
+            nb++;
+        } else
             postDiv.style.display = 'none';
     }
 };

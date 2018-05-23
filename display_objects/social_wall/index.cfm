@@ -1,3 +1,4 @@
+<cfparam name="objectparams.maxPosts" default="50" />
 <cfscript>
     include '../../plugin/settings.cfm';
 
@@ -7,6 +8,7 @@
     cacheTime = config.get('cacheTime');
     if (cacheTime == '')
         cacheTime = 10;
+    maxPosts = objectparams.maxPosts;
     /* Lucee does not support that syntax
     cf_CacheOMatic(timespan=createTimeSpan(0,0,cacheTime,0)) {
         start();
@@ -53,7 +55,6 @@
         posts.sort(function(p1, p2) {
             return -compare(p1.date, p2.date);
         });
-
 
         if (confMedia.len() < 2) {
             // clear options if there is less than 2 configured media
@@ -319,6 +320,7 @@
     <cfset pluginsPath = $.siteConfig().getPluginsPath()>
     <cfset pluginDir = variables.settings.package>
     <script>
+        var maxPosts = #maxPosts#;
         Mura(function(m) {
             m.loader()
             .loadcss('#pluginsPath#/#pluginDir#/assets/css/social_wall.css')
