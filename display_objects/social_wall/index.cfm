@@ -18,7 +18,7 @@
 
     public void function start() {
         res = getPosts(config);
-        template($, res.options, res.posts);
+        template($, res.options, res.posts, res.configured);
     }
 
     public struct function getPosts(config) {
@@ -35,20 +35,24 @@
         
         var confMedia = [];
         var posts = [];
+        var configured = false;
         
         if (twitterOAuthConsumerKey != '' && twitterOAuthConsumerSecret != '' && twitterScreenName != '') {
             confMedia.append('twitter');
             posts.append(getTwitterPosts(twitterOAuthConsumerKey, twitterOAuthConsumerSecret, twitterScreenName), true);
+            configured = true;
         }
         
         if (facebookAppID != '' && facebookAppSecret != '' && facebookUserId != '') {
             confMedia.append('facebook');
             posts.append(getFacebookPosts(facebookAppID, facebookAppSecret, facebookUserId), true);
+            configured = true;
         }
 
         if (instagramAccessToken != '') {
             confMedia.append('instagram');
             posts.append(getInstagramPosts(instagramAccessToken), true);
+            configured = true;
         }
 
         // sort by date
@@ -79,7 +83,8 @@
 
         return {
             options: options,
-            posts: posts
+            posts: posts,
+            configured: configured
         };
     }
 
@@ -280,7 +285,8 @@
     <cfargument name="$" type="struct" required="yes">
     <cfargument name="options" type="string" required="yes">
     <cfargument name="posts" type="array" required="yes">
-    <cfif options.len() eq 0>
+    <cfargument name="configured" type="boolean" required="yes">
+    <cfif !configured>
         <p>The Social Media Wall plugin has not been configured yet.</p>
     <cfelse>
         <cfif listLen(options, '|') gt 1>
