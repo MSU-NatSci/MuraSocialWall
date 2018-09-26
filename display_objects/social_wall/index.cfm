@@ -309,15 +309,15 @@
                     <span class="sw_date">#post.date.dateFormat('short')#</span>
                     <span class="sw_type"><span class="fa fa-#post.type#">&nbsp;</span><span class="sr-only">#post.type#</span></span>
                 </div>
-                #post.content#
+                <span class="sw_text">#post.content#</span>
                 <cfif structKeyExists(post, 'link')>
-                    <cfoutput> </cfoutput><a href="#post.link#">more...</a>
+                    <cfoutput> </cfoutput><a class="sw_more_link" href="#post.link#">more...</a>
                 </cfif>
                 <cfloop index="imageURL" array="#post.images#">
                     <cfif structKeyExists(post, 'link')>
-                        <a href="#post.link#"><img src="#imageURL#"></a>
+                        <a class="sw_image" href="#post.link#"><img src="#imageURL#"></a>
                     <cfelse>
-                        <img src="#imageURL#">
+                        <img class="sw_image" src="#imageURL#">
                     </cfif>
                 </cfloop>
             </div>
