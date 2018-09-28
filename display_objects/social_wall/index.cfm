@@ -315,9 +315,9 @@
                 </cfif>
                 <cfloop index="imageURL" array="#post.images#">
                     <cfif structKeyExists(post, 'link')>
-                        <a class="sw_image" href="#post.link#"><img src="#imageURL#"></a>
+                        <a class="sw_image" href="#post.link#"><img alt="Social Media Image" src="#imageURL#"></a>
                     <cfelse>
-                        <img class="sw_image" src="#imageURL#">
+                        <img alt="Social Media Image" class="sw_image" src="#imageURL#">
                     </cfif>
                 </cfloop>
             </div>
