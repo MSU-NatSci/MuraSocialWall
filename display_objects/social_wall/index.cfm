@@ -311,7 +311,7 @@
                 </div>
                 <span class="sw_text">#post.content#</span>
                 <cfif structKeyExists(post, 'link')>
-                    <cfoutput> </cfoutput><a class="sw_more_link" href="#post.link#">more...</a>
+                    <span> </span><a class="sw_more_link" href="#post.link#">more...</a>
                 </cfif>
                 <cfloop index="imageURL" array="#post.images#">
                     <cfif structKeyExists(post, 'link')>
