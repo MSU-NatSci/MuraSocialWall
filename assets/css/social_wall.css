@@ -23,6 +23,8 @@
     border: 1px solid #CCC;
     font-size: 85%;
     box-shadow: 0 0 10px 0 rgba(10,10,10,.2);
+    width: calc(100% - 20px);
+    word-wrap: break-word;
 }
 
 .sw_date {
