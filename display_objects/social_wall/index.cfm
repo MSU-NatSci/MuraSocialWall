@@ -208,8 +208,10 @@
                     if (structKeyExists(fbpost, 'message'))
                         message = fbpost.message;
                     message = message.reReplace('##(\w+)', '<a href="https://www.facebook.com/hashtag/\1">##\1</a>', 'all');
-                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]+)',
+                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]*)',
                         '\1<a href="\2">\2</a>', 'all');
+                    message = message.reReplace('(\s)(bit\.ly/[\w]+)',
+                        '\1<a href="https://\2">\2</a>', 'all');
                     var imgURL = '';
                     if (structKeyExists(fbpost, 'full_picture'))
                         imgURL = fbpost.full_picture;
@@ -257,7 +259,7 @@
                         message = ipost.caption.text;
                     message = message.reReplace('##(\w+)',
                         '<a href="https://www.instagram.com/explore/tags/\1">##\1</a>', 'all');
-                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]+)',
+                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]*)',
                         '\1<a href="\2">\2</a>', 'all');
                     message = message.reReplace('@(\w+)',
                         '<a href="https://www.instagram.com/\1/">@\1</a>', 'all');
