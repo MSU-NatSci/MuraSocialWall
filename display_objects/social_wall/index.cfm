@@ -187,7 +187,7 @@
         var httpService = new http(method="GET", charset="UTF-8",
             url="https://graph.facebook.com/#facebookUserId#/posts");
         httpService.addParam(type="URL", name="limit", value="20");
-        httpService.addParam(type="URL", name="fields", value="message,created_time,full_picture,link");
+        httpService.addParam(type="URL", name="fields", value="message,description,created_time,full_picture,link");
         httpService.addParam(type="URL", name="access_token", value="#facebookAppID#|#facebookAppSecret#");
         var result = httpService.send().getPrefix();
         if (result.statusCode == '200 OK') {
@@ -207,6 +207,8 @@
                     var message = '';
                     if (structKeyExists(fbpost, 'message'))
                         message = fbpost.message;
+                    else if (structKeyExists(fbpost, 'description'))
+                        message = fbpost.description;
                     message = message.reReplace('##(\w+)', '<a href="https://www.facebook.com/hashtag/\1">##\1</a>', 'all');
                     message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]*)',
                         '\1<a href="\2">\2</a>', 'all');
