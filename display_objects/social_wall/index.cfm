@@ -111,8 +111,9 @@
                 accessToken = json.access_token;
             }
         } else {
-            writeLog("api.twitter.com: #result.statusCode#");
-            writeLog(result.errorDetail);
+            writeLog("api.twitter.com: #result.statusCode#. #result.errorDetail#");
+            if (result.fileContent != '' && result.fileContent.len() < 500)
+                writeLog(result.fileContent);
         }
         if (accessToken != '') {
             httpService = new http(method="GET", charset="UTF-8",
@@ -174,8 +175,9 @@
                     }
                 }
             } else {
-                writeLog("api.twitter.com: #result.statusCode#");
-                writeLog(result.errorDetail);
+                writeLog("api.twitter.com: #result.statusCode#. #result.errorDetail#");
+                if (result.fileContent != '' && result.fileContent.len() < 500)
+                    writeLog(result.fileContent);
             }
         }
         return posts;
@@ -227,8 +229,9 @@
                 }
             }
         } else {
-            writeLog("graph.facebook.com: #result.statusCode#");
-            writeLog(result.errorDetail);
+            writeLog("graph.facebook.com: #result.statusCode#. #result.errorDetail#");
+            if (result.fileContent != '' && result.fileContent.len() < 500)
+                writeLog(result.fileContent);
         }
         return posts;
     }
@@ -272,8 +275,9 @@
                 }
             }
         } else {
-            writeLog("api.instagram.com: #result.statusCode#");
-            writeLog(result.errorDetail);
+            writeLog("api.instagram.com: #result.statusCode#. #result.errorDetail#");
+            if (result.fileContent != '' && result.fileContent.len() < 500)
+                writeLog(result.fileContent);
         }
         return posts;
     }
