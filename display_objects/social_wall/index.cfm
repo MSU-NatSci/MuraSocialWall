@@ -190,7 +190,10 @@
             url="https://graph.facebook.com/#facebookUserId#/posts");
         httpService.addParam(type="URL", name="limit", value="20");
         httpService.addParam(type="URL", name="fields", value="message,description,created_time,full_picture,link");
-        httpService.addParam(type="URL", name="access_token", value="#facebookAppID#|#facebookAppSecret#");
+        // this no longer works with CF 11 U 16, because of a CF bug (it's not encoding the pipe)
+        // httpService.addParam(type="URL", name="access_token", value="#facebookAppID#|#facebookAppSecret#");
+        httpService.addParam(type="URL", name="access_token",
+            value="#facebookAppID#%7C#facebookAppSecret#");
         var result = httpService.send().getPrefix();
         if (result.statusCode == '200 OK') {
             var json = '';
