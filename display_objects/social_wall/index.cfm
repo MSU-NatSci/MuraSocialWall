@@ -215,7 +215,7 @@
                     else if (structKeyExists(fbpost, 'description'))
                         message = fbpost.description;
                     message = message.reReplace('##(\w+)', '<a href="https://www.facebook.com/hashtag/\1">##\1</a>', 'all');
-                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]*)',
+                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+&]*)',
                         '\1<a href="\2">\2</a>', 'all');
                     message = message.reReplace('(\s)(bit\.ly/[\w]+)',
                         '\1<a href="https://\2">\2</a>', 'all');
@@ -267,7 +267,7 @@
                         message = ipost.caption.text;
                     message = message.reReplace('##(\w+)',
                         '<a href="https://www.instagram.com/explore/tags/\1">##\1</a>', 'all');
-                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+]*)',
+                    message = message.reReplace('([^"])(https?://[\w.\-]+/[\w+/\-%?=+&]*)',
                         '\1<a href="\2">\2</a>', 'all');
                     message = message.reReplace('@(\w+)',
                         '<a href="https://www.instagram.com/\1/">@\1</a>', 'all');
