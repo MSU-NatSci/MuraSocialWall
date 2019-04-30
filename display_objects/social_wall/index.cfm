@@ -105,12 +105,14 @@
             try {
                 json = deserializeJSON(result.fileContent);
             } catch (any e) {
+                writeLog("MuraSocialWall for site: #siteid#");
                 writeLog('Deserializing data from api.twitter.com: ' & e.message);
             }
             if (isStruct(json) && json.token_type == 'bearer') {
                 accessToken = json.access_token;
             }
         } else {
+            writeLog("MuraSocialWall for site: #siteid#");
             writeLog("api.twitter.com: #result.statusCode#. #result.errorDetail#");
             if (result.fileContent != '' && result.fileContent.len() < 500)
                 writeLog(result.fileContent);
@@ -127,6 +129,7 @@
                 try {
                     statuses = deserializeJSON(result.fileContent);
                 } catch (any e) {
+                    writeLog("MuraSocialWall for site: #siteid#");
                     writeLog('Deserializing data from api.twitter.com: ' & e.message);
                 }
                 if (isArray(statuses)) {
@@ -175,6 +178,7 @@
                     }
                 }
             } else {
+                writeLog("MuraSocialWall for site: #siteid#");
                 writeLog("api.twitter.com: #result.statusCode#. #result.errorDetail#");
                 if (result.fileContent != '' && result.fileContent.len() < 500)
                     writeLog(result.fileContent);
@@ -200,6 +204,7 @@
             try {
                 json = deserializeJSON(result.fileContent);
             } catch (any e) {
+                writeLog("MuraSocialWall for site: #siteid#");
                 writeLog('Deserializing data from graph.facebook.com: ' & e.message);
             }
             if (isStruct(json) && structKeyExists(json, 'data')) {
@@ -232,6 +237,7 @@
                 }
             }
         } else {
+            writeLog("MuraSocialWall for site: #siteid#");
             writeLog("graph.facebook.com: #result.statusCode#. #result.errorDetail#");
             if (result.fileContent != '' && result.fileContent.len() < 500)
                 writeLog(result.fileContent);
@@ -254,6 +260,7 @@
             try {
                 json = deserializeJSON(result.fileContent);
             } catch (any e) {
+                writeLog("MuraSocialWall for site: #siteid#");
                 writeLog('Deserializing data from instagram.com: ' & e.message);
             }
             if (isStruct(json) && structKeyExists(json, 'data')) {
@@ -278,6 +285,7 @@
                 }
             }
         } else {
+            writeLog("MuraSocialWall for site: #siteid#");
             writeLog("api.instagram.com: #result.statusCode#. #result.errorDetail#");
             if (result.fileContent != '' && result.fileContent.len() < 500)
                 writeLog(result.fileContent);
