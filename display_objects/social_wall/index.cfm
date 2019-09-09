@@ -25,8 +25,7 @@
         var twitterOAuthConsumerKey = config.get('twitterOAuthConsumerKey');
         var twitterOAuthConsumerSecret = config.get('twitterOAuthConsumerSecret');
         var twitterScreenName = config.get('twitterScreenName');
-        var facebookAppID = config.get('facebookAppID');
-        var facebookAppSecret = config.get('facebookAppSecret');
+        var facebookAccessToken = config.get('facebookAccessToken');
         var facebookUserId = config.get('facebookUserId');
         var instagramAccessToken = config.get('instagramAccessToken');
         var options = config.get('options');
@@ -43,9 +42,9 @@
             configured = true;
         }
         
-        if (facebookAppID != '' && facebookAppSecret != '' && facebookUserId != '') {
+        if (facebookAccessToken != '' && facebookUserId != '') {
             confMedia.append('facebook');
-            posts.append(getFacebookPosts(facebookAppID, facebookAppSecret, facebookUserId), true);
+            posts.append(getFacebookPosts(facebookAccessToken, facebookUserId), true);
             configured = true;
         }
 
@@ -187,17 +186,14 @@
         return posts;
     }
 
-    public array function getFacebookPosts(facebookAppID, facebookAppSecret, facebookUserId) {
+    public array function getFacebookPosts(facebookAccessToken, facebookUserId) {
         // see https://developers.facebook.com/docs/graph-api/
         var posts = [];
         var httpService = new http(method="GET", charset="UTF-8",
             url="https://graph.facebook.com/#facebookUserId#/posts");
         httpService.addParam(type="URL", name="limit", value="20");
         httpService.addParam(type="URL", name="fields", value="message,description,created_time,full_picture,link");
-        // this no longer works with CF 11 U 16, because of a CF bug (it's not encoding the pipe)
-        // httpService.addParam(type="URL", name="access_token", value="#facebookAppID#|#facebookAppSecret#");
-        httpService.addParam(type="URL", name="access_token",
-            value="#facebookAppID#%7C#facebookAppSecret#");
+        httpService.addParam(type="URL", name="access_token", value="#facebookAccessToken#");
         var result = httpService.send().getPrefix();
         if (result.statusCode == '200 OK') {
             var json = '';

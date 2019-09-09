@@ -16,8 +16,7 @@ component
     property name="twitterOAuthConsumerKey" datatype="varchar" length="255";
     property name="twitterOAuthConsumerSecret" datatype="varchar" length="255";
     property name="twitterScreenName" datatype="varchar" length="255";
-    property name="facebookAppID" datatype="varchar" length="255";
-    property name="facebookAppSecret" datatype="varchar" length="255";
+    property name="facebookAccessToken" datatype="varchar" length="255";
     property name="facebookUserId" datatype="varchar" length="255";
     property name="instagramAccessToken" datatype="varchar" length="255";
     property name="options" datatype="varchar" length="255" default="Twitter:twitter|Facebook:facebook|Instagram:instagram|All:twitter,facebook,instagram";

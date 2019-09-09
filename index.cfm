@@ -9,8 +9,7 @@
         twitterOAuthConsumerKey = form.twitterOAuthConsumerKey;
         twitterOAuthConsumerSecret = form.twitterOAuthConsumerSecret;
         twitterScreenName = form.twitterScreenName;
-        facebookAppID = form.facebookAppID;
-        facebookAppSecret = form.facebookAppSecret;
+        facebookAccessToken = form.facebookAccessToken;
         facebookUserId = form.facebookUserId;
         instagramAccessToken = form.instagramAccessToken;
         options = form.options;
@@ -20,8 +19,7 @@
         twitterOAuthConsumerKey = config.get('twitterOAuthConsumerKey');
         twitterOAuthConsumerSecret = config.get('twitterOAuthConsumerSecret');
         twitterScreenName = config.get('twitterScreenName');
-        facebookAppID = config.get('facebookAppID');
-        facebookAppSecret = config.get('facebookAppSecret');
+        facebookAccessToken = config.get('facebookAccessToken');
         facebookUserId = config.get('facebookUserId');
         instagramAccessToken = config.get('instagramAccessToken');
         options = config.get('options');
@@ -49,8 +47,7 @@
                 config.set('twitterOAuthConsumerKey', form.twitterOAuthConsumerKey);
                 config.set('twitterOAuthConsumerSecret', form.twitterOAuthConsumerSecret);
                 config.set('twitterScreenName', form.twitterScreenName);
-                config.set('facebookAppID', form.facebookAppID);
-                config.set('facebookAppSecret', form.facebookAppSecret);
+                config.set('facebookAccessToken', form.facebookAccessToken);
                 config.set('facebookUserId', form.facebookUserId);
                 config.set('instagramAccessToken', form.instagramAccessToken);
                 config.set('options', form.options);
@@ -129,15 +126,11 @@
                     <input type="text" name="twitterScreenName" value="#twitterScreenName#">
                 </div>
                 <div class="mura-control-group">
-                    <label>Facebook App ID</label>
-                    <input type="text" name="facebookAppID" value="#facebookAppID#">
+                    <label>Facebook Extended Access Token</label>
+                    <input type="text" name="facebookAccessToken" value="#facebookAccessToken#">
                 </div>
                 <div class="mura-control-group">
-                    <label>Facebook App Secret</label>
-                    <input type="text" name="facebookAppSecret" value="#facebookAppSecret#">
-                </div>
-                <div class="mura-control-group">
-                    <label>Facebook User Id</label>
+                    <label>Facebook User or Page Id</label>
                     <input type="text" name="facebookUserId" value="#facebookUserId#">
                 </div>
                 <div class="mura-control-group">
