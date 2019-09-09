@@ -13,12 +13,12 @@ An application needs to be created for each of the social media used. These appl
 
 - Facebook
 
-  A facebook app can be created at <https://developers.facebook.com/apps/>. We will need the app ID and secret. The app can be used in development mode, so it does not need to pass review.
+  A facebook app has to be created at <https://developers.facebook.com/apps/>. We will need the app ID and secret. The app can be used in development mode, so it does not need to pass review.
   Go to <https://developers.facebook.com/tools/explorer/> to get a temporary access token. Choose `Get Token` - `Get User Access Token`. Then copy the temporary access token.
   Next use the following URL in another tab, replacing parameters given in uppercase by their value:
   `https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=APP_ID&client_secret=APP_SECRET&fb_exchange_token=TEMPORARY_ACCESS_TOKEN`
-  It should return something like `{"access_token":"{permanent_access_token}","token_type":"bearer","expires_in":5184000}`
-  where `{permanent_access_token}` is the long-lived access token that we need to use to configure the plugin.
+  It should return something like `{"access_token":"PERMANENT_ACCESS_TOKEN","token_type":"bearer","expires_in":5184000}`
+  where `PERMANENT_ACCESS_TOKEN` is the long-lived access token that we need to use to configure the plugin.
   The only other data is the user id or page id where we want to pull posts. The page owner should also have an admin, developer or tester role for the app.
   That long-lived access token is only valid for 60 days, so it has to be renewed regularly.
   
